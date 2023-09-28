@@ -432,8 +432,7 @@ function checkMoving() {
           }
         } else {
           // Если группы сбора есть, нужно их удалить
-          console.log("config", config);
-          console.log("player", player);
+          setEffect();
           config.gameState = config.gameStates[3];
 
           // Отметим все удаляемые гемы
@@ -447,7 +446,6 @@ function checkMoving() {
 
           // Убираем с поля
           gemFade();
-          setEffect();
         }
         break;
       // После удаления нужно заполнить пустоту
@@ -492,7 +490,7 @@ function setEffect() {
   document.getElementById("container").appendChild(img);
   setTimeout(() => {
     document.getElementById("container").removeChild(img);
-  }, 1500);
+  }, 1800);
 }
 
 // Отмечаем элементы для удаления и убираем их из сетки
