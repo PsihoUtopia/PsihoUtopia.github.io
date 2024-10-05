@@ -242,7 +242,6 @@ function isVerticalStreak(row, col) {
 // Проверка на группу сбора по строкам
 function isHorizontalStreak(row, col) {
   let gemValue = components.gems[row][col];
-  //   console.log(" isHorizontalStreak gemValue", gemValue);
   let streak = 0;
   let tmp = col;
 
@@ -432,7 +431,15 @@ function checkMoving() {
           }
         } else {
           // Если группы сбора есть, нужно их удалить
-          setEffect();
+          let gemValue =
+            components.gems[player.selectedRow][player.selectedCol];
+          if (config.imagesCoin[gemValue]) {
+            let removedGemType = config.imagesCoin[gemValue]
+              .split("/")
+              .pop()
+              .split(".")[0];
+            setEffect(removedGemType);
+          }
           config.gameState = config.gameStates[3];
 
           // Отметим все удаляемые гемы
@@ -459,23 +466,18 @@ function checkMoving() {
   }
 }
 
-function setEffect() {
+function setEffect(removedGemType) {
   let img = new Image();
-  const gem = document.querySelector(
-    "#" + config.gemIdPrefix + "_" + player.posY + "_" + player.posX
-  );
-  const gemimg = gem.style.backgroundImage.slice(17, -6).toString();
-  console.log("gemimg", gemimg);
 
-  if (gemimg === "benladen") {
+  if (removedGemType === "benladen") {
     img.src = "images/effects/911.gif";
-  } else if (gemimg === "putin") {
+  } else if (removedGemType === "putin") {
     img.src = "images/effects/putin.gif";
-  } else if (gemimg === "trump") {
+  } else if (removedGemType === "trump") {
     img.src = "images/effects/trump.gif";
-  } else if (gemimg === "gay") {
+  } else if (removedGemType === "gay") {
     img.src = "images/effects/gay.gif";
-  } else if (gemimg === "greta") {
+  } else if (removedGemType === "greta") {
     img.src = "images/effects/greta.gif";
   } else {
     img.src = "images/effects/boom.gif";
