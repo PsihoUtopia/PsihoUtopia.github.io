@@ -27,7 +27,7 @@ let config = {
     "images/coins/gunTrump.png",
     "images/coins/elonTrump.png",
     "images/coins/taylorKamala.png",
-    "images/coins/handKamala.png",
+    "images/coins/bidenKamala.png",
     "images/coins/stupidKamala.png",
   ],
 
@@ -193,10 +193,18 @@ function scoreInc(count, type) {
     count *= (count + 2) * 2;
   }
 
-  if (type.includes("Trump")) {
-    config.countScoreTrump += count;
-  } else {
-    config.countScore += count;
+  try {
+    if (type.includes("Trump")) {
+      config.countScoreTrump += count;
+    } else {
+      config.countScore += count;
+    }
+  } catch (error) {
+    if (confirm("Democracy accidentally failed! (it happens)")) {
+      location.reload();
+    } else {
+      location.reload();
+    }
   }
 
   updateScore();
@@ -475,6 +483,11 @@ function checkMoving() {
           let gemValue =
             components.gems[player.selectedRow][player.selectedCol];
           if (config.imagesCoin[gemValue]) {
+            console.log("gemValue", gemValue);
+            console.log(
+              "config.imagesCoin[gemValue]",
+              config.imagesCoin[gemValue]
+            );
             let removedGemType = config.imagesCoin[gemValue]
               .split("/")
               .pop()
@@ -509,6 +522,16 @@ function checkMoving() {
 
 function setEffect(removedGemType) {
   let img = new Image();
+
+  console.log("removedGemType", removedGemType);
+
+  if (config.countScoreTrump >= 100) {
+    img.src = "images/effects/boom.gif";
+  }
+
+  if (config.countScore >= 100) {
+    img.src = "images/effects/boom.gif";
+  }
 
   if (removedGemType === "gunTrump") {
     img.src = "images/effects/911.gif";
