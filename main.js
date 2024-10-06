@@ -1,3 +1,15 @@
+window.onload = function () {
+  // Отображаем диалоговое окно с подтверждением
+  if (
+    confirm(
+      "No Swipes Here! First Click on the Clown, then Click on the Clown you want to Swap with!"
+    )
+  ) {
+  } else {
+    alert("no swipes anyway! Save Democracy!");
+  }
+};
+
 let config = {
   containerColorBG: "#353336",
   contentColorBG: "#525053",
@@ -11,11 +23,12 @@ let config = {
   gemSize: 64,
 
   imagesCoin: [
-    "images/coin/trump.png",
-    "images/coin/putin.png",
-    "images/coin/benladen.png",
-    "images/coin/greta.png",
-    "images/coin/gay.png",
+    "images/coins/faceTrump.png",
+    "images/coins/gunTrump.png",
+    "images/coins/elonTrump.png",
+    "images/coins/taylorKamala.png",
+    "images/coins/handKamala.png",
+    "images/coins/stupidKamala.png",
   ],
 
   gemClass: "gem",
@@ -26,6 +39,7 @@ let config = {
   movingItems: 0,
 
   countScore: 0,
+  countScoreTrump: 0,
 };
 
 let player = {
@@ -41,6 +55,7 @@ let components = {
   wrapper: document.createElement("div"),
   cursor: document.createElement("div"),
   score: document.createElement("div"),
+  scoreTrump: document.createElement("div"),
   gems: new Array(),
 };
 
@@ -107,8 +122,8 @@ function createCursor() {
   components.cursor.style.width = config.gemSize - 10 + "px";
   components.cursor.style.height = config.gemSize - 10 + "px";
   components.cursor.style.border = "5px solid white";
-  components.cursor.style.borderRadius = "20px";
   components.cursor.style.position = "absolute";
+  components.cursor.style.zIndex = 2;
   components.cursor.style.display = "none";
 
   components.wrapper.append(components.cursor);
@@ -124,33 +139,52 @@ function cursorHide() {
 
 // Создание блока для очков
 function createScore() {
-  components.score.style.width = 200 + "px";
+  components.score.style.width = 150 + "px";
   components.score.style.height = 50 + "px";
   components.score.style.display = "flex";
   components.score.style.justifyContent = "center";
   components.score.style.alignItems = "center";
   components.score.style.borderRadius = config.borderRadius + "px";
-  components.score.style.backgroundColor = config.contentColorBG;
+  components.score.style.backgroundColor = "#3B2B8E";
   components.score.style.position = "absolute";
   components.score.style.bottom = "calc(100% + " + 24 + "px)";
   components.score.style.left =
-    "calc(50% - " + parseInt(components.score.style.width) / 2 + "px)";
+    "calc(25% - " + parseInt(components.score.style.width) / 2 + "px)";
 
   components.score.style.fontFamily = "sans-serif";
   components.score.style.fontSize = "16px";
   components.score.style.color = "#ffffff";
+
+  components.scoreTrump.style.width = 150 + "px";
+  components.scoreTrump.style.height = 50 + "px";
+  components.scoreTrump.style.display = "flex";
+  components.scoreTrump.style.justifyContent = "center";
+  components.scoreTrump.style.alignItems = "center";
+  components.scoreTrump.style.borderRadius = config.borderRadius + "px";
+  components.scoreTrump.style.backgroundColor = "#D72029";
+  components.scoreTrump.style.position = "absolute";
+  components.scoreTrump.style.bottom = "calc(100% + " + 24 + "px)";
+  components.scoreTrump.style.left =
+    "calc(75% - " + parseInt(components.scoreTrump.style.width) / 2 + "px)";
+
+  components.scoreTrump.style.fontFamily = "sans-serif";
+  components.scoreTrump.style.fontSize = "16px";
+  components.scoreTrump.style.color = "#ffffff";
 
   updateScore();
 }
 
 // Обновить очки на странице
 function updateScore() {
-  components.score.innerHTML = config.countScore;
+  components.score.innerHTML = `Kamala: ${config.countScore}`;
   components.wrapper.append(components.score);
+
+  components.scoreTrump.innerHTML = `Trump: ${config.countScoreTrump}`;
+  components.wrapper.append(components.scoreTrump);
 }
 
 // Добавление очков
-function scoreInc(count) {
+function scoreInc(count, type) {
   if (count >= 4) {
     count *= 2;
   } else if (count >= 5) {
@@ -159,7 +193,12 @@ function scoreInc(count) {
     count *= (count + 2) * 2;
   }
 
-  config.countScore += count;
+  if (type.includes("Trump")) {
+    config.countScoreTrump += count;
+  } else {
+    config.countScore += count;
+  }
+
   updateScore();
 }
 
@@ -197,7 +236,9 @@ function createGrid() {
   for (i = 0; i < config.countRows; i++) {
     for (j = 0; j < config.countCols; j++) {
       do {
-        components.gems[i][j] = Math.floor(Math.random() * 5);
+        components.gems[i][j] = Math.floor(
+          Math.random() * config.imagesCoin.length
+        );
       } while (isStreak(i, j));
 
       createGem(
@@ -469,16 +510,16 @@ function checkMoving() {
 function setEffect(removedGemType) {
   let img = new Image();
 
-  if (removedGemType === "benladen") {
+  if (removedGemType === "gunTrump") {
     img.src = "images/effects/911.gif";
-  } else if (removedGemType === "putin") {
-    img.src = "images/effects/putin.gif";
-  } else if (removedGemType === "trump") {
+  } else if (removedGemType === "handKamala") {
+    img.src = "images/effects/trumpToilet.gif";
+  } else if (removedGemType === "faceTrump") {
     img.src = "images/effects/trump.gif";
-  } else if (removedGemType === "gay") {
-    img.src = "images/effects/gay.gif";
-  } else if (removedGemType === "greta") {
-    img.src = "images/effects/greta.gif";
+  } else if (removedGemType === "elonTrump") {
+    img.src = "images/effects/elonHigh.gif";
+  } else if (removedGemType === "stupidKamala") {
+    img.src = "images/effects/bidenSheIsGood.gif";
   } else {
     img.src = "images/effects/boom.gif";
   }
@@ -556,10 +597,11 @@ function removeGems(row, col) {
       countRemoveGem++;
     }
   }
-
   components.gems[row][col] = -1;
+  console.log("config.imagesCoin[gemValue]", config.imagesCoin[gemValue]);
 
-  scoreInc(countRemoveGem);
+  let removedGemImage = config.imagesCoin[gemValue];
+  scoreInc(countRemoveGem, removedGemImage);
 }
 
 // Удаляем гемы
@@ -635,7 +677,9 @@ function placeNewGems() {
   // Поиск мест, в которых необходимо создать гем
   for (i = 0; i < config.countCols; i++) {
     if (components.gems[0][i] == -1) {
-      components.gems[0][i] = Math.floor(Math.random() * 5);
+      components.gems[0][i] = Math.floor(
+        Math.random() * config.imagesCoin.length
+      );
 
       createGem(
         0,
