@@ -597,8 +597,11 @@ function delay(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+// Глобальная переменная для отслеживания оставшихся эффектов
+let remainingEffects = [];
+
+// Функция, которая случайно выбирает изображение и гарантирует, что эффекты не повторяются, пока не закончатся
 function setEffect(removedGemType) {
-  // Массив с путями к различным эффектам
   // Массив с путями ко всем эффектам
   const effectsArray = [
     "images/effects/911.gif",
@@ -622,12 +625,20 @@ function setEffect(removedGemType) {
     "images/effects/trumpSpeaks.webp",
   ];
 
+  // Если все эффекты были использованы, сбросить массив оставшихся эффектов
+  if (remainingEffects.length === 0) {
+    remainingEffects = [...effectsArray]; // Копируем исходный массив
+  }
+
+  // Выбор случайного индекса из оставшихся эффектов
+  const randomIndex = Math.floor(Math.random() * remainingEffects.length);
+
+  // Извлечение эффекта и удаление его из оставшихся
+  const chosenEffect = remainingEffects.splice(randomIndex, 1)[0];
+
   // Создание нового изображения
   let img = new Image();
-
-  // Выбор случайного изображения из массива
-  const randomIndex = Math.floor(Math.random() * effectsArray.length);
-  img.src = effectsArray[randomIndex];
+  img.src = chosenEffect;
 
   // Стиль изображения
   img.style.position = "fixed";
