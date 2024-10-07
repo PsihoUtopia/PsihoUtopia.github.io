@@ -2,11 +2,11 @@ window.onload = function () {
   // Отображаем диалоговое окно с подтверждением
   if (
     confirm(
-      "No Swipes Here! First Click on the Clown, then Click on the Clown you want to Swap with!"
+      "First Click on the Clown, then Click on the Clown you want to Swap with! Who reach 50 first - wins the election!"
     )
   ) {
   } else {
-    alert("no swipes anyway! Save Democracy!");
+    alert("Get 50 first! Save Democracy!");
   }
 };
 
@@ -206,7 +206,7 @@ function scoreInc(count, type) {
       location.reload();
     }
   }
-
+  setVyctoryEffect();
   updateScore();
 }
 
@@ -520,18 +520,116 @@ function checkMoving() {
   }
 }
 
+async function setVyctoryEffect() {
+  const container = document.getElementById("container");
+
+  // Создание нового изображения
+  let img = new Image();
+  img.style.position = "fixed";
+  img.style.top = "50%";
+  img.style.left = "50%";
+  img.style.transform = "translate(-50%, -50%)";
+  img.style.zIndex = "3";
+  container.appendChild(img);
+
+  // Проверка условий
+  if (config.countScoreTrump >= 50) {
+    // Массив путей к изображениям для победы Трампа
+    const trumpImages = [
+      "images/victoryEffects/trump/trumpWins1.png",
+      "images/victoryEffects/trump/trumpWins2.png",
+      "images/victoryEffects/trump/trumpWins3.png",
+      "images/victoryEffects/trump/trumpWins4.png",
+      "images/victoryEffects/trump/trumpWins5.png",
+      "images/victoryEffects/trump/trumpWins6.png",
+    ];
+
+    // Последовательный показ изображений и затем гифки boom
+    await showVictorySequence(img, trumpImages, "images/effects/boom.gif");
+    alert("Trump wins! Share your vote! Send this game to your friends!");
+  } else if (config.countScore >= 50) {
+    // Массив путей к изображениям для обычной победы
+    const regularImages = [
+      "images/victoryEffects/kamala/kamalaWins1.png",
+      "images/victoryEffects/kamala/kamalaWins2.png",
+      "images/victoryEffects/kamala/kamalaWins3.png",
+      "images/victoryEffects/kamala/kamalaWins4.png",
+      "images/victoryEffects/kamala/kamalaWins5.png",
+      "images/victoryEffects/kamala/kamalaWins6.png",
+    ];
+
+    // Последовательный показ изображений и затем альтернативной гифки
+    await showVictorySequence(img, regularImages, "images/effects/gayKiss.gif");
+    alert("Kamala wins! Share your vote! Send this game to your friends!");
+  }
+
+  // Удаление изображения из DOM после завершения показа
+  container.removeChild(img);
+}
+
+// Функция для последовательного показа изображений и финальной гифки
+async function showVictorySequence(imgElement, imageArray, finalGif) {
+  for (let i = 0; i < imageArray.length; i++) {
+    imgElement.src = imageArray[i];
+
+    // Время задержки для каждой картинки
+    let displayTime;
+    if (i === 0 || i === imageArray.length - 1) {
+      displayTime = 1000; // Первая и последняя картинки показываются по 1 секунде
+    } else {
+      displayTime = Math.max(100, 1000 - i * 100); // Промежуточные показываются с уменьшением на 0.2 секунды
+    }
+
+    await delay(displayTime); // Ожидание перед переключением изображения
+  }
+
+  // Показ финальной гифки
+  imgElement.src = finalGif;
+  await delay(2000); // Показ финальной гифки 2 секунды
+}
+
+// Вспомогательная функция для ожидания указанного времени
+function delay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+// Вспомогательная функция для ожидания указанного времени
+function delay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+// function setVyctoryEffect() {
+//   let img = new Image();
+
+//   console.log("config.countScoreTrump", config.countScoreTrump);
+//   console.log("config.countScore", config.countScore);
+
+//   if (config.countScoreTrump >= 5) {
+//     img.src = "images/effects/boom.gif";
+//   }
+
+//   if (config.countScore >= 5) {
+//     img.src = "images/effects/gayKiss.gif";
+//   }
+
+//   img.style.position = "fixed";
+//   img.style.top = "50%";
+//   img.style.left = "50%";
+//   img.style.transform = "translate(-50%, -50%)";
+//   img.style.zIndex = "3";
+
+//   document.getElementById("container").appendChild(img);
+//   setTimeout(() => {
+//     document.getElementById("container").removeChild(img);
+//   }, 2000);
+// }
+
 function setEffect(removedGemType) {
   let img = new Image();
 
   console.log("removedGemType", removedGemType);
-
-  if (config.countScoreTrump >= 100) {
-    img.src = "images/effects/boom.gif";
-  }
-
-  if (config.countScore >= 100) {
-    img.src = "images/effects/boom.gif";
-  }
+  console.log("config.countScoreTrump", config.countScoreTrump);
+  console.log("config.countScore", config.countScore);
 
   if (removedGemType === "gunTrump") {
     img.src = "images/effects/911.gif";
@@ -544,7 +642,15 @@ function setEffect(removedGemType) {
   } else if (removedGemType === "stupidKamala") {
     img.src = "images/effects/bidenSheIsGood.gif";
   } else {
+    img.src = "images/effects/putin.gif";
+  }
+
+  if (config.countScoreTrump >= 10) {
     img.src = "images/effects/boom.gif";
+  }
+
+  if (config.countScore >= 10) {
+    img.src = "images/effects/gayKiss.gif";
   }
 
   img.style.position = "fixed";
@@ -620,6 +726,10 @@ function removeGems(row, col) {
       countRemoveGem++;
     }
   }
+  console.log(
+    "config.imagesCoin[components.gems[row][col]]",
+    config.imagesCoin[components.gems[row][col]]
+  );
   components.gems[row][col] = -1;
   console.log("config.imagesCoin[gemValue]", config.imagesCoin[gemValue]);
 
