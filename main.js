@@ -616,7 +616,7 @@ function setEffect(removedGemType) {
     "images/effects/kamalaMarks.webp",
     "images/effects/trumpMetro.webp",
     "images/effects/elonHigh.gif",
-    "images/effects/kamalaNuke.webp",
+    "images/effects/kamalaNuke.gif",
     "images/effects/trumpPutin.webp",
     "images/effects/putin.gif",
     "images/effects/trumpSpeaks.webp",
@@ -628,12 +628,6 @@ function setEffect(removedGemType) {
   // Выбор случайного изображения из массива
   const randomIndex = Math.floor(Math.random() * effectsArray.length);
   img.src = effectsArray[randomIndex];
-
-  // Логирование значений для отладки
-  console.log("removedGemType:", removedGemType);
-  console.log("config.countScoreTrump:", config.countScoreTrump);
-  console.log("config.countScore:", config.countScore);
-  console.log("Random Effect Selected:", img.src);
 
   // Стиль изображения
   img.style.position = "fixed";
