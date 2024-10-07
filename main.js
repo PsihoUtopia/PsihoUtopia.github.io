@@ -1,12 +1,9 @@
 window.onload = function () {
   // Отображаем диалоговое окно с подтверждением
-  if (
-    confirm(
-      "First Click on the Clown, then Click on the Clown you want to Swap with! Who reach 50 first - wins the election!"
-    )
-  ) {
+  if (confirm("Click to select!")) {
+    alert("Get 50% first! Save Democracy!");
   } else {
-    alert("Get 50 first! Save Democracy!");
+    alert("Get 50% first! Save Democracy!");
   }
 };
 
@@ -27,8 +24,8 @@ let config = {
     "images/coins/gunTrump.png",
     "images/coins/elonTrump.png",
     "images/coins/taylorKamala.png",
-    "images/coins/bidenKamala.png",
-    "images/coins/stupidKamala.png",
+    "images/coins/blueKamala.png",
+    "images/coins/voteBlueKamala.png",
   ],
 
   gemClass: "gem",
@@ -176,16 +173,16 @@ function createScore() {
 
 // Обновить очки на странице
 function updateScore() {
-  components.score.innerHTML = `Kamala: ${config.countScore}`;
+  components.score.innerHTML = `Kamala: ${config.countScore} %`;
   components.wrapper.append(components.score);
 
-  components.scoreTrump.innerHTML = `Trump: ${config.countScoreTrump}`;
+  components.scoreTrump.innerHTML = `Trump: ${config.countScoreTrump} %`;
   components.wrapper.append(components.scoreTrump);
 }
 
 // Добавление очков
 function scoreInc(count, type) {
-  if (count >= 4) {
+  if (count >= 3) {
     count *= 2;
   } else if (count >= 5) {
     count = (count + 1) * 2;
@@ -200,7 +197,9 @@ function scoreInc(count, type) {
       config.countScore += count;
     }
   } catch (error) {
-    if (confirm("Democracy accidentally failed! (it happens)")) {
+    if (
+      confirm("Democracy accidentally failed! Civil war started! (it happens)")
+    ) {
       location.reload();
     } else {
       location.reload();
@@ -598,68 +597,55 @@ function delay(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-// function setVyctoryEffect() {
-//   let img = new Image();
-
-//   console.log("config.countScoreTrump", config.countScoreTrump);
-//   console.log("config.countScore", config.countScore);
-
-//   if (config.countScoreTrump >= 5) {
-//     img.src = "images/effects/boom.gif";
-//   }
-
-//   if (config.countScore >= 5) {
-//     img.src = "images/effects/gayKiss.gif";
-//   }
-
-//   img.style.position = "fixed";
-//   img.style.top = "50%";
-//   img.style.left = "50%";
-//   img.style.transform = "translate(-50%, -50%)";
-//   img.style.zIndex = "3";
-
-//   document.getElementById("container").appendChild(img);
-//   setTimeout(() => {
-//     document.getElementById("container").removeChild(img);
-//   }, 2000);
-// }
-
 function setEffect(removedGemType) {
+  // Массив с путями к различным эффектам
+  // Массив с путями ко всем эффектам
+  const effectsArray = [
+    "images/effects/911.gif",
+    "images/effects/kamalaInteresting.webp",
+    "images/effects/trump.gif",
+    "images/effects/trumpToilet.gif",
+    "images/effects/bidenSheIsGood.gif",
+    "images/effects/kamalaLenin.webp",
+    "images/effects/trumpEatsdogs.webp",
+    "images/effects/trumpWall.webp",
+    "images/effects/kamalaLiberalElite.webp",
+    "images/effects/trumpGlitch.webp",
+    "images/effects/trumpww3.webp",
+    "images/effects/chinaEatsYourLunch.webp",
+    "images/effects/kamalaMarks.webp",
+    "images/effects/trumpMetro.webp",
+    "images/effects/elonHigh.gif",
+    "images/effects/kamalaNuke.webp",
+    "images/effects/trumpPutin.webp",
+    "images/effects/putin.gif",
+    "images/effects/trumpSpeaks.webp",
+  ];
+
+  // Создание нового изображения
   let img = new Image();
 
-  console.log("removedGemType", removedGemType);
-  console.log("config.countScoreTrump", config.countScoreTrump);
-  console.log("config.countScore", config.countScore);
+  // Выбор случайного изображения из массива
+  const randomIndex = Math.floor(Math.random() * effectsArray.length);
+  img.src = effectsArray[randomIndex];
 
-  if (removedGemType === "gunTrump") {
-    img.src = "images/effects/911.gif";
-  } else if (removedGemType === "handKamala") {
-    img.src = "images/effects/trumpToilet.gif";
-  } else if (removedGemType === "faceTrump") {
-    img.src = "images/effects/trump.gif";
-  } else if (removedGemType === "elonTrump") {
-    img.src = "images/effects/elonHigh.gif";
-  } else if (removedGemType === "stupidKamala") {
-    img.src = "images/effects/bidenSheIsGood.gif";
-  } else {
-    img.src = "images/effects/putin.gif";
-  }
+  // Логирование значений для отладки
+  console.log("removedGemType:", removedGemType);
+  console.log("config.countScoreTrump:", config.countScoreTrump);
+  console.log("config.countScore:", config.countScore);
+  console.log("Random Effect Selected:", img.src);
 
-  if (config.countScoreTrump >= 10) {
-    img.src = "images/effects/boom.gif";
-  }
-
-  if (config.countScore >= 10) {
-    img.src = "images/effects/gayKiss.gif";
-  }
-
+  // Стиль изображения
   img.style.position = "fixed";
   img.style.top = "50%";
   img.style.left = "50%";
   img.style.transform = "translate(-50%, -50%)";
   img.style.zIndex = "2";
 
+  // Добавление изображения в контейнер
   document.getElementById("container").appendChild(img);
+
+  // Удаление изображения через 1.8 секунды
   setTimeout(() => {
     document.getElementById("container").removeChild(img);
   }, 1800);
