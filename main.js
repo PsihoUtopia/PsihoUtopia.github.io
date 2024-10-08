@@ -44,14 +44,12 @@ let player = {
 };
 
 let components = {
-  container: document.createElement("div"),
-  content: document.createElement("div"),
-  wrapper: document.createElement("div"),
   cursor: document.createElement("div"),
-  score: document.createElement("div"),
-  scoreTrump: document.createElement("div"),
   gems: new Array(),
 };
+let wrapper = document.querySelector(".wrapper");
+let score = document.querySelector(".score");
+let scoreTrump = document.querySelector(".scoreTrump");
 
 // start Game
 initGame();
@@ -59,55 +57,12 @@ initGame();
 // Инициализация всех составляющих игры
 function initGame() {
   document.body.style.margin = "0px";
-  createPage();
-  createContentPage();
-  createWrapper();
   createCursor();
   createGrid();
-  createScore();
+  updateScore();
 
   // Переключаем статус игры на "выбор"
   config.gameState = config.gameStates[0];
-}
-
-// Создание обертки для страницы
-function createPage() {
-  components.container.style.backgroundColor = config.containerColorBG;
-  components.container.style.height = "100vh";
-  components.container.style.overflow = "hidden";
-  components.container.style.display = "flex";
-  components.container.style.alignItems = "center";
-  components.container.style.justifyContent = "center";
-  components.container.setAttribute("id", "container");
-
-  document.body.append(components.container);
-}
-
-// Создание обертки с контентом
-function createContentPage() {
-  components.content.style.padding = config.offsetBorder + "px";
-  components.content.style.width =
-    config.gemSize * config.countCols + config.offsetBorder * 2 + "px";
-  components.content.style.height =
-    config.gemSize * config.countRows + config.offsetBorder * 2 + "px";
-  components.content.style.backgroundColor = config.contentColorBG;
-  components.content.style.boxShadow = config.offsetBorder + "px";
-  components.content.style.borderRadius = config.borderRadius + "px";
-  components.content.style.boxSizing = "border-box";
-
-  components.container.append(components.content);
-}
-
-// Создание обертки для монет и очков
-function createWrapper() {
-  components.wrapper.style.position = "relative";
-  components.wrapper.style.height = "100%";
-  components.wrapper.addEventListener("click", function (event) {
-    handlerTab(event, event.target);
-  });
-  components.content.setAttribute("id", "content");
-
-  components.content.append(components.wrapper);
 }
 
 // Создание курсора для выделения монет
@@ -120,7 +75,7 @@ function createCursor() {
   components.cursor.style.zIndex = 2;
   components.cursor.style.display = "none";
 
-  components.wrapper.append(components.cursor);
+  wrapper.append(components.cursor);
 }
 // Показать курсор
 function cursorShow() {
@@ -131,50 +86,13 @@ function cursorHide() {
   components.cursor.style.display = "none";
 }
 
-// Создание блока для очков
-function createScore() {
-  components.score.style.width = 150 + "px";
-  components.score.style.height = 50 + "px";
-  components.score.style.display = "flex";
-  components.score.style.justifyContent = "center";
-  components.score.style.alignItems = "center";
-  components.score.style.borderRadius = config.borderRadius + "px";
-  components.score.style.backgroundColor = "#3B2B8E";
-  components.score.style.position = "absolute";
-  components.score.style.bottom = "calc(100% + " + 24 + "px)";
-  components.score.style.left =
-    "calc(25% - " + parseInt(components.score.style.width) / 2 + "px)";
-
-  components.score.style.fontFamily = "sans-serif";
-  components.score.style.fontSize = "16px";
-  components.score.style.color = "#ffffff";
-
-  components.scoreTrump.style.width = 150 + "px";
-  components.scoreTrump.style.height = 50 + "px";
-  components.scoreTrump.style.display = "flex";
-  components.scoreTrump.style.justifyContent = "center";
-  components.scoreTrump.style.alignItems = "center";
-  components.scoreTrump.style.borderRadius = config.borderRadius + "px";
-  components.scoreTrump.style.backgroundColor = "#D72029";
-  components.scoreTrump.style.position = "absolute";
-  components.scoreTrump.style.bottom = "calc(100% + " + 24 + "px)";
-  components.scoreTrump.style.left =
-    "calc(75% - " + parseInt(components.scoreTrump.style.width) / 2 + "px)";
-
-  components.scoreTrump.style.fontFamily = "sans-serif";
-  components.scoreTrump.style.fontSize = "16px";
-  components.scoreTrump.style.color = "#ffffff";
-
-  updateScore();
-}
-
 // Обновить очки на странице
 function updateScore() {
-  components.score.innerHTML = `Kamala: ${config.countScore} %`;
-  components.wrapper.append(components.score);
+  score.innerHTML = `Kamala: ${config.countScore} %`;
+  wrapper.append(score);
 
-  components.scoreTrump.innerHTML = `Trump: ${config.countScoreTrump} %`;
-  components.wrapper.append(components.scoreTrump);
+  scoreTrump.innerHTML = `Trump: ${config.countScoreTrump} %`;
+  wrapper.append(scoreTrump);
 }
 
 // Добавление очков
@@ -223,7 +141,12 @@ function createGem(t, l, row, col, img) {
   coin.style.backgroundImage = "url(" + img + ")";
   coin.style.backgroundSize = "100%";
 
-  components.wrapper.append(coin);
+  wrapper.append(coin);
+}
+
+function refresh() {
+  console.log("refresh");
+  createGrid();
 }
 
 // Создание и наполнение сетки для монет
@@ -526,6 +449,7 @@ async function setVyctoryEffect() {
   img.style.left = "50%";
   img.style.transform = "translate(-50%, -50%)";
   img.style.zIndex = "3";
+  img.style.width = "100%";
   container.appendChild(img);
 
   // Проверка условий
@@ -642,6 +566,7 @@ function setEffect(removedGemType) {
   img.style.top = "50%";
   img.style.left = "50%";
   img.style.transform = "translate(-50%, -50%)";
+  img.style.width = "100%";
   img.style.zIndex = "2";
 
   // Добавление изображения в контейнер

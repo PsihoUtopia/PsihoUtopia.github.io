@@ -1,0 +1,81 @@
+body {
+  margin: 0;
+  background-color: #353336;
+}
+#container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  overflow: hidden;
+}
+#content {
+  padding: 10px;
+  width: 340px; /* 5 cols * 64px (gemSize) + 20px offset */
+  height: 470px; /* 7 rows * 64px (gemSize) + 20px offset */
+  background-color: #525053;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+.wrapper {
+  position: relative;
+  height: 100%;
+}
+.gem {
+  box-sizing: border-box;
+  cursor: pointer;
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  border: 1px solid transparent;
+  background-repeat: repeat; /* Отключаем повтор */
+  background-position: center; /* Центрируем фон */
+  background-size: 110% !important;
+}
+#marker {
+  width: 54px;
+  height: 54px;
+  border: 5px solid white;
+  position: absolute;
+  z-index: 2;
+  display: none;
+}
+.score {
+  width: 150px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  background-color: #3b2b8e;
+  position: absolute;
+  bottom: calc(100% + 24px);
+  left: calc(25% - 75px);
+  font-family: sans-serif;
+  font-size: 16px;
+  color: #ffffff;
+}
+.scoreTrump {
+  width: 150px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  background-color: #d72029;
+  position: absolute;
+  bottom: calc(100% + 24px);
+  left: calc(75% - 75px);
+  font-family: sans-serif;
+  font-size: 16px;
+  color: #ffffff;
+}
+
+.shake {
+  position: absolute;
+  left: 50%; /* Position at the center horizontally */
+  margin-top: 50px;
+  transform: translate(-50%, -50%); /* Adjust for the button's own dimensions */
+  padding: 10px 20px;
+  background-color: #dee2e6;
+}

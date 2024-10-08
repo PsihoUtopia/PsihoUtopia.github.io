@@ -4,7 +4,8 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title></title>
+    <title>Match Meta Modern</title>
+    <link rel="stylesheet" href="styles.css" />
     <script
       async
       src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8393884430936318"
@@ -12,6 +13,19 @@
     ></script>
   </head>
   <body>
+    <div id="container">
+      <div id="content">
+        <div
+          class="wrapper"
+          id="wrapper"
+          onclick="handlerTab(event, event.target)"
+        ></div>
+        <div id="marker"></div>
+        <div class="score" id="score">Kamala: 0 %</div>
+        <div class="scoreTrump" id="scoreTrump">Trump: 0 %</div>
+        <button class="shake" onclick="refresh()">Shake White House</button>
+      </div>
+    </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="main.js"></script>
   </body>
