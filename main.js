@@ -1,10 +1,7 @@
 window.onload = function () {
   // Отображаем диалоговое окно с подтверждением
-  if (confirm("Click to select!")) {
-    alert("Get 50% first! Save Democracy!");
-  } else {
-    alert("Get 50% first! Save Democracy!");
-  }
+
+  alert("Click to select! Get 50% first! Save Democracy!");
 };
 
 let config = {
