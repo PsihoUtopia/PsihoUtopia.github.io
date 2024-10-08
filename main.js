@@ -545,6 +545,7 @@ function setEffect(removedGemType) {
     "images/effects/trumpPutin.webp",
     "images/effects/putin.gif",
     "images/effects/trumpSpeaks.webp",
+    "images/effects/kamalaBidenShow.webp",
   ];
 
   // Если все эффекты были использованы, сбросить массив оставшихся эффектов
