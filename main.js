@@ -127,7 +127,7 @@ function scoreInc(count, type) {
 // Создание монеты
 function createGem(t, l, row, col, img) {
   let coin = document.createElement("div");
-
+  coin.classList.add("coin");
   coin.classList.add(config.gemClass);
   coin.id = config.gemIdPrefix + "_" + row + "_" + col;
   coin.style.boxSizing = "border-box";
@@ -151,6 +151,7 @@ function refresh() {
 
 // Создание и наполнение сетки для монет
 function createGrid() {
+  document.querySelectorAll(".coin").forEach((coin) => coin.remove());
   // Создание пустой сетки
   for (i = 0; i < config.countRows; i++) {
     components.gems[i] = new Array();
@@ -566,8 +567,11 @@ function setEffect(removedGemType) {
   img.style.top = "50%";
   img.style.left = "50%";
   img.style.transform = "translate(-50%, -50%)";
-  img.style.width = "100%";
+  img.style.width = "50%";
   img.style.zIndex = "2";
+  if (window.innerWidth <= 768) {
+    img.style.width = "100%";
+  }
 
   // Добавление изображения в контейнер
   document.getElementById("container").appendChild(img);
