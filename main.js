@@ -451,8 +451,8 @@ function checkMoving() {
 
 function uptateMovesCounter() {
   movesCounter.innerHTML = `Moves: ${config.countMoves}`;
-  const container = document.getElementById("container");
-  container.append(movesCounter);
+  const content = document.getElementById("content");
+  content.append(movesCounter);
 }
 
 async function setVyctoryEffect() {
