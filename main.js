@@ -34,6 +34,7 @@ let config = {
 
   countScore: 0,
   countScoreTrump: 0,
+  countMoves: 0,
 };
 
 let player = {
@@ -50,6 +51,7 @@ let components = {
 let wrapper = document.querySelector(".wrapper");
 let score = document.querySelector(".score");
 let scoreTrump = document.querySelector(".scoreTrump");
+let movesCounter = document.querySelector(".moves");
 
 // start Game
 initGame();
@@ -57,6 +59,10 @@ initGame();
 // Инициализация всех составляющих игры
 function initGame() {
   document.body.style.margin = "0px";
+  config.countScore = 0;
+  config.countScoreTrump = 0;
+  config.countMoves = 0;
+  uptateMovesCounter();
   createCursor();
   createGrid();
   updateScore();
@@ -145,7 +151,8 @@ function createGem(t, l, row, col, img) {
 }
 
 function refresh() {
-  console.log("refresh");
+  config.countMoves++;
+  uptateMovesCounter();
   createGrid();
 }
 
@@ -400,6 +407,8 @@ function checkMoving() {
           }
         } else {
           // Если группы сбора есть, нужно их удалить
+          config.countMoves++;
+          uptateMovesCounter();
           let gemValue =
             components.gems[player.selectedRow][player.selectedCol];
           if (config.imagesCoin[gemValue]) {
@@ -440,6 +449,12 @@ function checkMoving() {
   }
 }
 
+function uptateMovesCounter() {
+  movesCounter.innerHTML = `Moves: ${config.countMoves}`;
+  const container = document.getElementById("container");
+  container.append(movesCounter);
+}
+
 async function setVyctoryEffect() {
   const container = document.getElementById("container");
 
@@ -467,7 +482,10 @@ async function setVyctoryEffect() {
 
     // Последовательный показ изображений и затем гифки boom
     await showVictorySequence(img, trumpImages, "images/effects/boom.gif");
-    alert("Trump wins! Share your vote! Send this game to your friends!");
+    alert(
+      `Trump wins in ${config.countMoves} moves! Share your Result! Send this game to your friends!`
+    );
+    initGame();
   } else if (config.countScore >= 50) {
     // Массив путей к изображениям для обычной победы
     const regularImages = [
@@ -481,7 +499,10 @@ async function setVyctoryEffect() {
 
     // Последовательный показ изображений и затем альтернативной гифки
     await showVictorySequence(img, regularImages, "images/effects/gayKiss.gif");
-    alert("Kamala wins! Share your vote! Send this game to your friends!");
+    alert(
+      `Kamala wins in ${config.countMoves} moves! Share your Result! Send this game to your friends!`
+    );
+    initGame();
   }
 
   // Удаление изображения из DOM после завершения показа
